@@ -488,14 +488,77 @@
       color: var(--muted);
     }
 
-    .reviews {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
+    .reviews-carousel {
+      position: relative;
+      overflow: hidden;
+      padding: 4px 0 18px;
+    }
+
+    .reviews-carousel::before,
+    .reviews-carousel::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      z-index: 2;
+      width: 92px;
+      pointer-events: none;
+    }
+
+    .reviews-carousel::before {
+      left: 0;
+      background: linear-gradient(90deg, #eef8f3 0%, rgba(238, 248, 243, 0) 100%);
+    }
+
+    .reviews-carousel::after {
+      right: 0;
+      background: linear-gradient(270deg, #eef8f3 0%, rgba(238, 248, 243, 0) 100%);
+    }
+
+    .reviews-track {
+      display: flex;
       gap: 18px;
+      width: max-content;
+      animation: review-marquee 34s linear infinite;
+    }
+
+    .reviews-carousel:hover .reviews-track {
+      animation-play-state: paused;
     }
 
     .review {
+      flex: 0 0 calc((min(1180px, 100vw - 36px) - 36px) / 3);
+      min-height: 238px;
       padding: 24px;
+    }
+
+    .review-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .review-meta .stars {
+      margin-bottom: 0;
+    }
+
+    .review-pet {
+      color: var(--teal);
+      font-size: 14px;
+      font-weight: 750;
+      white-space: nowrap;
+    }
+
+    @keyframes review-marquee {
+      from {
+        transform: translateX(0);
+      }
+
+      to {
+        transform: translateX(calc(-50% - 9px));
+      }
     }
 
     .stars {
@@ -751,11 +814,19 @@
       .stats,
       .services,
       .prices,
-      .reviews,
       .process-grid,
       .location-grid,
       .booking-box {
         grid-template-columns: 1fr;
+      }
+
+      .reviews-carousel::before,
+      .reviews-carousel::after {
+        width: 42px;
+      }
+
+      .review {
+        flex-basis: min(78vw, 360px);
       }
 
       .section-head {
@@ -832,6 +903,19 @@
         right: 14px;
         top: auto;
         bottom: 14px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reviews-track {
+        width: auto;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        animation: none;
+      }
+
+      .review {
+        scroll-snap-align: start;
       }
     }
   </style>
@@ -1015,22 +1099,105 @@
           <h2>附近铲屎官常来这里</h2>
           <p>我们更在意宠物是否放松，也在意主人接回它时的第一眼惊喜。</p>
         </div>
-        <div class="reviews">
+        <div class="reviews-carousel" aria-label="客户评价轮播">
+          <div class="reviews-track">
           <article class="card review">
-            <div class="stars" aria-label="五星评价">★★★★★</div>
+            <div class="review-meta">
+              <div class="stars" aria-label="五星评价">★★★★★</div>
+              <span class="review-pet">比熊洗护</span>
+            </div>
             <h3>团团妈妈</h3>
             <p>狗狗胆子小，以前洗澡会发抖。这里美容师会慢慢安抚，接出来毛很蓬，状态也很放松。</p>
           </article>
           <article class="card review">
-            <div class="stars" aria-label="五星评价">★★★★★</div>
+            <div class="review-meta">
+              <div class="stars" aria-label="五星评价">★★★★★</div>
+              <span class="review-pet">泰迪精修</span>
+            </div>
             <h3>奶茶爸爸</h3>
             <p>剪得很自然，不会为了造型把毛剃太短。每次都会说清楚耳朵和皮肤情况，很负责。</p>
           </article>
           <article class="card review">
-            <div class="stars" aria-label="五星评价">★★★★★</div>
+            <div class="review-meta">
+              <div class="stars" aria-label="五星评价">★★★★★</div>
+              <span class="review-pet">短毛猫洗护</span>
+            </div>
             <h3>小橘主人</h3>
             <p>猫咪洗护做得很温柔，预约制不用等太久，店里也没有很重的香精味。</p>
           </article>
+          <article class="card review">
+            <div class="review-meta">
+              <div class="stars" aria-label="五星评价">★★★★★</div>
+              <span class="review-pet">金毛护理</span>
+            </div>
+            <h3>阿布姐姐</h3>
+            <p>大狗洗完吹得很透，回家没有潮味。脚底毛和指甲也处理得干净，出门走路舒服很多。</p>
+          </article>
+          <article class="card review">
+            <div class="review-meta">
+              <div class="stars" aria-label="五星评价">★★★★★</div>
+              <span class="review-pet">布偶猫梳毛</span>
+            </div>
+            <h3>云朵爸爸</h3>
+            <p>长毛猫打结的地方没有硬扯，美容师会边做边观察情绪。接回家后毛顺了，猫也没有躲人。</p>
+          </article>
+          <article class="card review">
+            <div class="review-meta">
+              <div class="stars" aria-label="五星评价">★★★★★</div>
+              <span class="review-pet">柴犬换毛</span>
+            </div>
+            <h3>饭团妈妈</h3>
+            <p>换毛季救星，底绒梳得很彻底。店员还提醒了皮肤泛红的位置，感觉不是只做表面功夫。</p>
+          </article>
+          <article class="card review" aria-hidden="true">
+            <div class="review-meta">
+              <div class="stars">★★★★★</div>
+              <span class="review-pet">比熊洗护</span>
+            </div>
+            <h3>团团妈妈</h3>
+            <p>狗狗胆子小，以前洗澡会发抖。这里美容师会慢慢安抚，接出来毛很蓬，状态也很放松。</p>
+          </article>
+          <article class="card review" aria-hidden="true">
+            <div class="review-meta">
+              <div class="stars">★★★★★</div>
+              <span class="review-pet">泰迪精修</span>
+            </div>
+            <h3>奶茶爸爸</h3>
+            <p>剪得很自然，不会为了造型把毛剃太短。每次都会说清楚耳朵和皮肤情况，很负责。</p>
+          </article>
+          <article class="card review" aria-hidden="true">
+            <div class="review-meta">
+              <div class="stars">★★★★★</div>
+              <span class="review-pet">短毛猫洗护</span>
+            </div>
+            <h3>小橘主人</h3>
+            <p>猫咪洗护做得很温柔，预约制不用等太久，店里也没有很重的香精味。</p>
+          </article>
+          <article class="card review" aria-hidden="true">
+            <div class="review-meta">
+              <div class="stars">★★★★★</div>
+              <span class="review-pet">金毛护理</span>
+            </div>
+            <h3>阿布姐姐</h3>
+            <p>大狗洗完吹得很透，回家没有潮味。脚底毛和指甲也处理得干净，出门走路舒服很多。</p>
+          </article>
+          <article class="card review" aria-hidden="true">
+            <div class="review-meta">
+              <div class="stars">★★★★★</div>
+              <span class="review-pet">布偶猫梳毛</span>
+            </div>
+            <h3>云朵爸爸</h3>
+            <p>长毛猫打结的地方没有硬扯，美容师会边做边观察情绪。接回家后毛顺了，猫也没有躲人。</p>
+          </article>
+          <article class="card review" aria-hidden="true">
+            <div class="review-meta">
+              <div class="stars">★★★★★</div>
+              <span class="review-pet">柴犬换毛</span>
+            </div>
+            <h3>饭团妈妈</h3>
+            <p>换毛季救星，底绒梳得很彻底。店员还提醒了皮肤泛红的位置，感觉不是只做表面功夫。</p>
+          </article>
+          </div>
         </div>
       </div>
     </section>
